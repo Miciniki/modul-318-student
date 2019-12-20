@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 using SwissTransport;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Mail;
 using System.IO;
+using System.Media;
+using S22.Imap;
+
 
 namespace ProjektÜK318
 {
@@ -18,11 +22,15 @@ namespace ProjektÜK318
 
     public partial class Nikola : Form
     {
+        static Form f;
+        private SoundPlayer soundPlayer;
         private ITransport transport;
+        
 
         public Nikola()
         {
-            
+            soundPlayer = new SoundPlayer("Russia.wav");
+            f = this;
 
             InitializeComponent();
 
@@ -33,88 +41,93 @@ namespace ProjektÜK318
             transport = new Transport();
             
         }
-        private void btn_Suchen_Click(object sender, EventArgs e)
+        private void Btn_Suchen_Click(object sender, EventArgs e)
         {
+            
             btn_Suchen.BackColor = Color.SkyBlue;
-            listBox_Ausgabe.Items.Clear();
+                listBox_Ausgabe.Items.Clear();
 
-            //Falls Ankunftsort angegeben wurde, werden die Verbindungen angezeigt
-            if (comboBox_Ankunftsort.Text != "" && comboBox_Abfahrtsort.Text != "")
-            {
-
-                comboBox_Abfahrtsort.SelectedIndex = 0;
-                comboBox_Ankunftsort.SelectedIndex = 0;
-                Connections connections = transport.GetConnectionsWithTime(((string)comboBox_Abfahrtsort.SelectedItem), ((string)comboBox_Ankunftsort.SelectedItem), dateTimePicker1.Value);
-
-
-                //Es werden bis zu Vier verbindungen angezeigt
-                foreach (var connection in connections.ConnectionList)
+                //Falls Ankunftsort angegeben wurde, werden die Verbindungen angezeigt
+                if (comboBox_Ankunftsort.Text != "" && comboBox_Abfahrtsort.Text != "")
                 {
-                    var departure = Convert.ToDateTime(connection.From.Departure);
-                    var arrival = Convert.ToDateTime(connection.To.Arrival);
+
+                    comboBox_Abfahrtsort.SelectedIndex = 0;
+                    comboBox_Ankunftsort.SelectedIndex = 0;
+                    Connections connections = transport.GetConnectionsWithTime(((string)comboBox_Abfahrtsort.SelectedItem), ((string)comboBox_Ankunftsort.SelectedItem), dateTimePicker1.Value);
 
 
-                    var obj = connection.Duration.Split('d');
-                    var obj2 = obj[1].Split(':');
+                    //Es werden bis zu Vier verbindungen angezeigt
+                    foreach (var connection in connections.ConnectionList)
+                    {
+                        var departure = Convert.ToDateTime(connection.From.Departure);
+                        var arrival = Convert.ToDateTime(connection.To.Arrival);
 
-                    //sorgt für eine schönere Ausgabe beim benuzer
-                    var customStringDeparture = String.Format("{0} Uhr {1} Minuten", departure.Hour, departure.Minute);
-                    var customStringArrival = String.Format("{0} Uhr {1} Minuten", arrival.Hour, arrival.Minute);
-                    var customStringDuration = String.Format("{0} Minuten", int.Parse(obj2[0]) * 60 + int.Parse(obj2[1]));
-                    
-                    listBox_Ausgabe.Items.Add(customStringDeparture + "               " + customStringDuration + "               " + customStringArrival);
+
+                        var obj = connection.Duration.Split('d');
+                        var obj2 = obj[1].Split(':');
+
+                        //sorgt für eine schönere Ausgabe beim benuzer
+                        var customStringDeparture = String.Format("{0} Uhr {1} Minuten", departure.Hour, departure.Minute);
+                        var customStringArrival = String.Format("{0} Uhr {1} Minuten", arrival.Hour, arrival.Minute);
+                        var customStringDuration = String.Format("{0} Minuten", int.Parse(obj2[0]) * 60 + int.Parse(obj2[1]));
+
+                        listBox_Ausgabe.Items.Add(customStringDeparture + "               " + customStringDuration + "               " + customStringArrival);
+                    }
                 }
-            }
-            //Falls nur Abfahrtsort angegeben, sollte Abfahrttafel erscheinen
-            else if (comboBox_Abfahrtsort.Text != "" && comboBox_Ankunftsort.Text == "")
-            {
 
-                new Anzeigetafel((Station)comboBox_Abfahrtsort.SelectedItem, transport).Show();
 
-            }
 
-            else
-            {
-                MessageBox.Show("Bitte geben Sie einen Abfahrtsort ein");
-                btn_Suchen.BackColor = Color.Red;
-            }
+                else
+                {
+                    MessageBox.Show("Bitte geben Sie einen Abfahrtsort ein");
+                    btn_Suchen.BackColor = Color.Red;
+                }
+           
         }
         private void UserInput(ComboBox input)
         {
-
-            if (input.Text != string.Empty)
+            try
             {
 
-                var text = input.Text;
-                var newStations = transport.GetStations(input.Text);
-
-                //ist für Autofill zuständig
-                if (newStations.StationList.Count > 0)
+                if (input.Text != string.Empty)
                 {
-                    input.Items.Clear();
-                   foreach(var s in newStations.StationList)
+
+                    var text = input.Text;
+                    var newStations = transport.GetStations(input.Text);
+
+                    //ist für Autofill zuständig
+                    if (newStations.StationList.Count > 0)
                     {
-                        input.Items.Add(s.Name);
-                    }
+                        input.Items.Clear();
+                       foreach(var s in newStations.StationList)
+                       {
+                            input.Items.Add(s.Name);
+                       }
                   
                     }
+                }
+                else
+                {
+
+                    MessageBox.Show("Es wurde keine Station mit ihrer Eingabe gefunden");
+
+                }
+
             }
-            else
+            catch
             {
-
-                MessageBox.Show("Es wurde keine Station mit ihrer Eingabe gefunden");
-
+                MessageBox.Show("Keine internetverbindung vorhanden!!!");
             }
         }
 
-        private void comboBox_Abfahrtsort_TextUpdate(object sender, EventArgs e)
+        private void ComboBox_Abfahrtsort_TextUpdate(object sender, EventArgs e)
         {
             ComboBox input = comboBox_Abfahrtsort;
             UserInput(input);
 
         }
 
-        private void comboBox_Ankunftsort_TextUpdate(object sender, EventArgs e)
+        private void ComboBox_Ankunftsort_TextUpdate(object sender, EventArgs e)
         {
             ComboBox input = comboBox_Ankunftsort;
             UserInput(input);
@@ -123,41 +136,18 @@ namespace ProjektÜK318
 
         private void Nikola_Load(object sender, EventArgs e)
         {
-            System.IO.Stream str = Properties.Resources.Russia;
-            System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-            snd.Play();
+            soundPlayer.Play();
+            
+           
         }
 
-        private void button_Mail_Click(object sender, EventArgs e)
+        private void Button_Mail_Click(object sender, EventArgs e)
         {
 
-            /* Ist für das versenden von mails zuständig
-             funktioniert noch nicht einwandfrei*/
-
-            MailMessage message = new MailMessage();
-            //SmtpClient smtp = new SmtpClient("192.168.0.113", 25);
-            SmtpClient client = new SmtpClient();
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Host = "smtp.gmail.com";
-
-            message.From = new MailAddress("niemalspommfritt@gmail.com");
-            message.To.Add(new MailAddress("niemalspommfritt@gmail.com"));
-            message.Subject = "SBB Verbindungen";
-
-            var body = string.Empty;
-
-            foreach (var item in listBox_Ausgabe.Items)
-            {
-                body += (string)item;
-            }
-
-            message.Body = body;
-
-            client.Send(message);
+            System.Diagnostics.Process.Start("mailto:mail@domain.com");
         }
 
-        private void button_Help_Click_1(object sender, EventArgs e)
+        private void Button_Help_Click_1(object sender, EventArgs e)
         {
             
                 if (MessageBox.Show("Sie werden mit unserem Kompetentesten Mitarbeiter reden dürfen", "TopHilfe.Nikola", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
@@ -165,14 +155,57 @@ namespace ProjektÜK318
             
         }
 
-        private void button_Sponoring_Click_1(object sender, EventArgs e)
+        private void Button_Sponoring_Click_1(object sender, EventArgs e)
         {
 
             System.Diagnostics.Process.Start("https://m.benedict.ch/");
         }
 
-        private void button_Mail_Click_1(object sender, EventArgs e)
+        private void Button_Mail_Click_1(object sender, EventArgs e)
         {
+
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            //Falls nur Abfahrtsort angegeben sollte Abfahrttafel erscheinen bei button klick
+
+            List<StationBoard> StationBoardList = transport.GetStationBoard(comboBox_Abfahrtsort.Text,"id").Entries;
+
+            listBox_Ausgabe.Items.Clear();
+
+            foreach (var s in StationBoardList)
+            {
+                if (s.Name != null)
+                {
+                    listBoxAusgehendeverbindungen.Items.Add("Von: " + comboBox_Abfahrtsort.Text + "        Nach: " + s.To);
+                    listBoxAusgehendeverbindungen.Items.Add("");
+                }
+            }
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ButtonLocationSuchen_Click(object sender, EventArgs e)
+        {
+           try 
+            {
+                if (comboBox_Abfahrtsort.Text != "")
+                {
+                    System.Diagnostics.Process.Start("https://www.google.ch/maps/place/" + comboBox_Abfahrtsort.Text );
+                }
+                else
+                {
+                    MessageBox.Show("Kein Stationsort angegeben!");
+                }
+            }
+            catch
+            {
+
+            }
 
         }
     }

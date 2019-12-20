@@ -24,7 +24,14 @@ namespace SwissTransport
 
             Assert.IsNotNull(stationBoard);
         }
+        [TestMethod]
+        public void GetConnectionsWithTime()
+        {
+            testee = new Transport();
+            var stationBoard = testee.GetConnectionsWithTime("Sursee", "Zürich", System.DateTime.Now);
 
+            Assert.IsNotNull(stationBoard);
+        }
         [TestMethod]
         public void Connections()
         {

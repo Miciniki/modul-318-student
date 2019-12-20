@@ -48,6 +48,10 @@
             this.button_Help = new System.Windows.Forms.Button();
             this.Datumsauswahl = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.Verbindungausgehend = new System.Windows.Forms.Button();
+            this.listBoxAusgehendeverbindungen = new System.Windows.Forms.ListBox();
+            this.Abfahrtsort1 = new System.Windows.Forms.Label();
+            this.ButtonLocationSuchen = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_Mail
@@ -58,11 +62,11 @@
             this.button_Mail.Location = new System.Drawing.Point(77, 944);
             this.button_Mail.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.button_Mail.Name = "button_Mail";
-            this.button_Mail.Size = new System.Drawing.Size(2352, 76);
+            this.button_Mail.Size = new System.Drawing.Size(2350, 76);
             this.button_Mail.TabIndex = 28;
             this.button_Mail.Text = "Mail";
             this.button_Mail.UseVisualStyleBackColor = false;
-            this.button_Mail.Click += new System.EventHandler(this.button_Mail_Click_1);
+            this.button_Mail.Click += new System.EventHandler(this.Button_Mail_Click);
             // 
             // dateTimePicker1
             // 
@@ -76,7 +80,7 @@
             // 
             // listBox_Ausgabe
             // 
-            this.listBox_Ausgabe.BackColor = System.Drawing.Color.AliceBlue;
+            this.listBox_Ausgabe.BackColor = System.Drawing.Color.DodgerBlue;
             this.listBox_Ausgabe.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox_Ausgabe.FormattingEnabled = true;
             this.listBox_Ausgabe.ItemHeight = 53;
@@ -139,7 +143,7 @@
             this.btn_Suchen.TabIndex = 21;
             this.btn_Suchen.Text = "Suchen";
             this.btn_Suchen.UseVisualStyleBackColor = false;
-            this.btn_Suchen.Click += new System.EventHandler(this.btn_Suchen_Click);
+            this.btn_Suchen.Click += new System.EventHandler(this.Btn_Suchen_Click);
             // 
             // label3
             // 
@@ -176,25 +180,25 @@
             // 
             // comboBox_Ankunftsort
             // 
-            this.comboBox_Ankunftsort.BackColor = System.Drawing.Color.DodgerBlue;
+            this.comboBox_Ankunftsort.BackColor = System.Drawing.Color.LightCyan;
             this.comboBox_Ankunftsort.FormattingEnabled = true;
             this.comboBox_Ankunftsort.Location = new System.Drawing.Point(1443, 307);
             this.comboBox_Ankunftsort.Margin = new System.Windows.Forms.Padding(5);
             this.comboBox_Ankunftsort.Name = "comboBox_Ankunftsort";
             this.comboBox_Ankunftsort.Size = new System.Drawing.Size(625, 39);
             this.comboBox_Ankunftsort.TabIndex = 17;
-            this.comboBox_Ankunftsort.DropDown += new System.EventHandler(this.comboBox_Ankunftsort_TextUpdate);
+            this.comboBox_Ankunftsort.DropDown += new System.EventHandler(this.ComboBox_Ankunftsort_TextUpdate);
             // 
             // comboBox_Abfahrtsort
             // 
-            this.comboBox_Abfahrtsort.BackColor = System.Drawing.Color.DodgerBlue;
+            this.comboBox_Abfahrtsort.BackColor = System.Drawing.Color.LightCyan;
             this.comboBox_Abfahrtsort.FormattingEnabled = true;
             this.comboBox_Abfahrtsort.Location = new System.Drawing.Point(432, 307);
             this.comboBox_Abfahrtsort.Margin = new System.Windows.Forms.Padding(5);
             this.comboBox_Abfahrtsort.Name = "comboBox_Abfahrtsort";
             this.comboBox_Abfahrtsort.Size = new System.Drawing.Size(612, 39);
             this.comboBox_Abfahrtsort.TabIndex = 16;
-            this.comboBox_Abfahrtsort.DropDown += new System.EventHandler(this.comboBox_Abfahrtsort_TextUpdate);
+            this.comboBox_Abfahrtsort.DropDown += new System.EventHandler(this.ComboBox_Abfahrtsort_TextUpdate);
             // 
             // imageList1
             // 
@@ -212,7 +216,7 @@
             this.button_Sponoring.TabIndex = 30;
             this.button_Sponoring.Text = "Sponsoring";
             this.button_Sponoring.UseVisualStyleBackColor = false;
-            this.button_Sponoring.Click += new System.EventHandler(this.button_Sponoring_Click_1);
+            this.button_Sponoring.Click += new System.EventHandler(this.Button_Sponoring_Click_1);
             // 
             // button_Help
             // 
@@ -225,7 +229,7 @@
             this.button_Help.TabIndex = 29;
             this.button_Help.Text = "Bei fragen klicken Sie bitte hier drauf, Sie werden sofort eine Lösung finden";
             this.button_Help.UseVisualStyleBackColor = false;
-            this.button_Help.Click += new System.EventHandler(this.button_Help_Click_1);
+            this.button_Help.Click += new System.EventHandler(this.Button_Help_Click_1);
             // 
             // Datumsauswahl
             // 
@@ -238,11 +242,63 @@
             this.Datumsauswahl.TabIndex = 31;
             this.Datumsauswahl.Text = "Datumsauswahl:";
             // 
+            // Verbindungausgehend
+            // 
+            this.Verbindungausgehend.BackColor = System.Drawing.Color.Lime;
+            this.Verbindungausgehend.Location = new System.Drawing.Point(77, 1052);
+            this.Verbindungausgehend.Name = "Verbindungausgehend";
+            this.Verbindungausgehend.Size = new System.Drawing.Size(2350, 76);
+            this.Verbindungausgehend.TabIndex = 32;
+            this.Verbindungausgehend.Text = "Ausgehende Verbindungen";
+            this.Verbindungausgehend.UseVisualStyleBackColor = false;
+            this.Verbindungausgehend.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // listBoxAusgehendeverbindungen
+            // 
+            this.listBoxAusgehendeverbindungen.BackColor = System.Drawing.Color.DodgerBlue;
+            this.listBoxAusgehendeverbindungen.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxAusgehendeverbindungen.FormattingEnabled = true;
+            this.listBoxAusgehendeverbindungen.ItemHeight = 53;
+            this.listBoxAusgehendeverbindungen.Location = new System.Drawing.Point(378, 1270);
+            this.listBoxAusgehendeverbindungen.Margin = new System.Windows.Forms.Padding(5);
+            this.listBoxAusgehendeverbindungen.Name = "listBoxAusgehendeverbindungen";
+            this.listBoxAusgehendeverbindungen.Size = new System.Drawing.Size(1795, 216);
+            this.listBoxAusgehendeverbindungen.TabIndex = 33;
+            // 
+            // Abfahrtsort1
+            // 
+            this.Abfahrtsort1.AutoSize = true;
+            this.Abfahrtsort1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Abfahrtsort1.Location = new System.Drawing.Point(367, 1175);
+            this.Abfahrtsort1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.Abfahrtsort1.Name = "Abfahrtsort1";
+            this.Abfahrtsort1.Size = new System.Drawing.Size(324, 63);
+            this.Abfahrtsort1.TabIndex = 34;
+            this.Abfahrtsort1.Text = "Abfahrtsort:";
+            this.Abfahrtsort1.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // ButtonLocationSuchen
+            // 
+            this.ButtonLocationSuchen.Location = new System.Drawing.Point(77, 514);
+            this.ButtonLocationSuchen.Name = "ButtonLocationSuchen";
+            this.ButtonLocationSuchen.Size = new System.Drawing.Size(296, 216);
+            this.ButtonLocationSuchen.TabIndex = 35;
+            this.ButtonLocationSuchen.Text = "Location Suchen";
+            this.ButtonLocationSuchen.UseVisualStyleBackColor = true;
+            this.ButtonLocationSuchen.Click += new System.EventHandler(this.ButtonLocationSuchen_Click);
+            // 
             // Nikola
             // 
+            this.AcceptButton = this.btn_Suchen;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2490, 1067);
+            this.AutoSize = true;
+            this.BackColor = System.Drawing.Color.Gold;
+            this.ClientSize = new System.Drawing.Size(2443, 1510);
+            this.Controls.Add(this.ButtonLocationSuchen);
+            this.Controls.Add(this.Abfahrtsort1);
+            this.Controls.Add(this.listBoxAusgehendeverbindungen);
+            this.Controls.Add(this.Verbindungausgehend);
             this.Controls.Add(this.Datumsauswahl);
             this.Controls.Add(this.button_Mail);
             this.Controls.Add(this.dateTimePicker1);
@@ -259,9 +315,13 @@
             this.Controls.Add(this.comboBox_Abfahrtsort);
             this.Controls.Add(this.button_Sponoring);
             this.Controls.Add(this.button_Help);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
             this.Name = "Nikola";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "BlyatBB APP";
             this.Load += new System.EventHandler(this.Nikola_Load);
+            this.Enter += new System.EventHandler(this.Btn_Suchen_Click);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -287,6 +347,10 @@
         private System.Windows.Forms.Button button_Help;
         private System.Windows.Forms.Label Datumsauswahl;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button Verbindungausgehend;
+        private System.Windows.Forms.ListBox listBoxAusgehendeverbindungen;
+        private System.Windows.Forms.Label Abfahrtsort1;
+        private System.Windows.Forms.Button ButtonLocationSuchen;
     }
 }
 

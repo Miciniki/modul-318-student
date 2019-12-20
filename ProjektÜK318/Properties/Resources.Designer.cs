@@ -67,5 +67,10 @@ namespace ProjektÜK318.Properties
                 resourceCulture = value;
             }
         }
+
+        internal static System.IO.UnmanagedMemoryStream Russia
+        {
+            get { return ResourceManager.GetStream(name: "Russia", resourceCulture); }
+        }
     }
 }
